@@ -6,15 +6,20 @@ buildscript {
         targetSdkVersion = 36
         ndkVersion = "27.1.12297006"
         kotlinVersion = "2.1.20"
+        // Pin Android Gradle Plugin (AGP) to a version compatible with Gradle 9 and Java 21
+        agpVersion = "8.4.2"
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
+        // Android Gradle Plugin
+        classpath("com.android.tools.build:gradle:${agpVersion}")
+        // React Native Gradle plugin (from node_modules autolinked build)
         classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        // Kotlin Gradle plugin pinned to the project's kotlinVersion
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
     }
 }
 
