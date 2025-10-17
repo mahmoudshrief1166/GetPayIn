@@ -7,6 +7,7 @@ import { RootState } from '../store/store';
 import { colors } from '../utils/constants/colors';
 import DropDownComponent from '../components/dropDownList';
 import CustomFlatList from '../components/customFlatList';
+import { wp, hp } from '../utils/constants/responsive';
 
 export default function AllProductScreen() {
   const { data, isError, isLoading, refetch, isFetching } = useAllProducts();
@@ -36,7 +37,7 @@ export default function AllProductScreen() {
   if (isLoading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color={themeColor.primary} />
+        <ActivityIndicator size={hp(6)} color={themeColor.primary} />
       </View>
     );
   }
@@ -69,15 +70,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: wp(5),
   },
   errorText: {
-    fontSize: 16,
+    fontSize: hp(2),
+    textAlign: 'center',
   },
   container: {
     flex: 1,
-    padding: 10,
-  },
-  row: {
-    justifyContent: 'space-between',
+    padding: wp(2),
   },
 });

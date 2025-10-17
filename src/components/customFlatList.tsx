@@ -5,6 +5,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import ProductCard from './productCard';
+import { hp, wp } from '../utils/constants/responsive';
 
 interface CustomFlatListProps {
   data: any[];
@@ -39,11 +40,10 @@ export default function CustomFlatList({
 
 const styles = StyleSheet.create({
   list: {
-    padding: 10,
-    paddingBottom: 30,
+    padding: wp(2),
   },
   row: {
     justifyContent: 'space-between',
-    marginBottom: 14,
+    marginBottom: hp(2),
   },
-});
+})

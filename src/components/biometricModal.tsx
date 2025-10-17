@@ -14,6 +14,7 @@ import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
 import { colors } from '../utils/constants/colors';
 import { getPassword, setLocalPassword } from '../utils/storage/mmKv';
+import { wp, hp } from '../utils/constants/responsive';
 
 interface Props {
   isVisible: boolean;
@@ -35,7 +36,6 @@ export default function BiometricModal({ isVisible, onUnlock }: Props) {
     setLocalPassword('1234');
 
     const rnBiometrics = new ReactNativeBiometrics();
-
 
     const timer = setTimeout(async () => {
       try {
@@ -94,7 +94,7 @@ export default function BiometricModal({ isVisible, onUnlock }: Props) {
           </>
         ) : fallback ? (
           <>
-            <Icon name="lock-outline" size={80} color={themeColor.primary} style={{ marginBottom: 10 }} />
+            <Icon name="lock-outline" size={hp(12)} color={themeColor.primary} style={{ marginBottom: hp(2) }} />
             <Text style={[styles.title, { color: themeColor.primary }]}>Enter Password</Text>
             <TextInput
               style={[styles.input, { borderColor: themeColor.primary, color: themeColor.text }]}
@@ -112,7 +112,7 @@ export default function BiometricModal({ isVisible, onUnlock }: Props) {
           </>
         ) : authFailed ? (
           <>
-            <Icon name="fingerprint-off" size={80} color="#FF3B30" />
+            <Icon name="fingerprint-off" size={hp(12)} color="#FF3B30" />
             <Text style={[styles.title, { color: '#FF3B30' }]}>Authentication Failed</Text>
             <Text style={[styles.message, { color: themeColor.text }]}>Please try again or use password.</Text>
 
@@ -122,7 +122,7 @@ export default function BiometricModal({ isVisible, onUnlock }: Props) {
           </>
         ) : (
           <>
-            <Icon name="fingerprint" size={100} color={themeColor.primary} />
+            <Icon name="fingerprint" size={hp(15)} color={themeColor.primary} />
             <Text style={[styles.title, { color: themeColor.primary }]}>Authenticate</Text>
             <Text style={[styles.message, { color: themeColor.text }]}>Use your fingerprint or Face ID to continue.</Text>
           </>
@@ -137,40 +137,43 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 25,
+    paddingHorizontal: wp(5),
   },
   title: {
-    fontSize: 26,
+    fontSize: wp(6),
     fontWeight: 'bold',
-    marginTop: 10,
+    marginTop: hp(1),
+    textAlign: 'center',
   },
   message: {
-    marginTop: 12,
-    fontSize: 17,
+    marginTop: hp(1),
+    fontSize: wp(4),
     textAlign: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: wp(2),
   },
   retryBtn: {
-    marginTop: 25,
-    paddingVertical: 12,
-    paddingHorizontal: 35,
-    borderRadius: 10,
+    marginTop: hp(2),
+    paddingVertical: hp(1.5),
+    paddingHorizontal: wp(10),
+    borderRadius: wp(2),
   },
   retryText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: wp(4),
     fontWeight: '600',
+    textAlign: 'center',
   },
   input: {
     width: '80%',
     borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 12,
-    marginTop: 15,
+    borderRadius: wp(2),
+    paddingHorizontal: wp(2),
+    paddingVertical: hp(1.5),
+    marginTop: hp(1.5),
   },
   error: {
-    marginTop: 10,
-    fontSize: 14,
+    marginTop: hp(1),
+    fontSize: wp(3.5),
+    textAlign: 'center',
   },
 });

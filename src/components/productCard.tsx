@@ -11,10 +11,8 @@ import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
 import { colors } from '../utils/constants/colors';
 import { USER_ROLES } from '../utils/constants/constants';
-import Toast from 'react-native-toast-message';
-import { useDeleteProduct } from '../hooks/api_hooks/productsHooks';
+import { width } from '../utils/constants/responsive';
 
-const { width } = Dimensions.get('window');
 const CARD_WIDTH = width / 2 - 24;
 
 export default function ProductCard({
@@ -27,26 +25,6 @@ export default function ProductCard({
   const { role } = useAppSelector((state: RootState) => state.auth);
   const theme = useAppSelector((state: RootState) => state.theme.theme);
   const themeColor = colors[theme];
-  const deleteMutation = useDeleteProduct();
-  const handleDelete = (id: number) => {
-    deleteMutation.mutate(id, {
-      onSuccess: () => {
-        Toast.show({
-          type: 'success',
-          text1: 'Deleted!',
-          text2: 'Product deleted successfully',
-        });
-      },
-      onError: () => {
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Failed to delete product',
-        });
-      },
-    });
-  };
-
   return (
     <View
       style={[

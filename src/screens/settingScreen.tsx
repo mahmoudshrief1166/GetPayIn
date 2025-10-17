@@ -11,10 +11,9 @@ import { clearToken, clearUser } from '../utils/storage/mmKv';
 import Toast from 'react-native-toast-message';
 import { toogleTheme } from '../store/themeSlice';
 import { colors } from '../utils/constants/colors';
-import { USeLock } from '../hooks/regular_hooks/lockHooks';
+import { wp, hp } from '../utils/constants/responsive';
 
 export default function SettingsScreen() {
-    const registerActivity = USeLock();
   const dispatch = useAppDispatch();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -45,8 +44,7 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View
-    style={[styles.container, { backgroundColor: themeColor.background }]}>
+    <View style={[styles.container, { backgroundColor: themeColor.background }]}>
       <Text style={[styles.title, { color: themeColor.text }]}>Settings</Text>
 
       <View style={styles.buttonsContainer}>
@@ -55,7 +53,7 @@ export default function SettingsScreen() {
           onPress={() => dispatch(toogleTheme())}
           style={[styles.button, { backgroundColor: themeColor.button }]}
         >
-          <Icon name="theme-light-dark" size={22} color={themeColor.buttonText} />
+          <Icon name="theme-light-dark" size={wp(5)} color={themeColor.buttonText} />
           <Text style={[styles.buttonText, { color: themeColor.buttonText }]}>
             Change Theme
           </Text>
@@ -66,7 +64,7 @@ export default function SettingsScreen() {
           onPress={handleLogOut}
           style={[styles.button, { backgroundColor: '#ff4d4f' }]}
         >
-          <Icon name="logout" size={22} color="#fff" />
+          <Icon name="logout" size={wp(5)} color="#fff" />
           <Text style={[styles.buttonText, { color: '#fff' }]}>Log Out</Text>
         </TouchableOpacity>
       </View>
@@ -79,28 +77,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: wp(5),
   },
   title: {
-    fontSize: 26,
+    fontSize: wp(7),
     fontWeight: '700',
-    marginBottom: 30,
+    marginBottom: hp(3),
   },
   buttonsContainer: {
     width: '100%',
-    gap: 16,
+    gap: hp(2),
   },
   button: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 14,
-    borderRadius: 10,
+    paddingVertical: hp(2),
+    borderRadius: wp(3),
     elevation: 3,
-    gap: 10,
+    gap: wp(2),
   },
   buttonText: {
-    fontSize: 17,
+    fontSize: wp(4.5),
     fontWeight: '600',
   },
 });

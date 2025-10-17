@@ -10,10 +10,13 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigations/nativeStackNavigation';
 import { setBiometricEnabled } from '../store/authSlice';
 import React from 'react';
-import { getTheme, getToken } from '../utils/storage/mmKv';
+import {  getToken } from '../utils/storage/mmKv';
+import { colors } from '../utils/constants/colors';
 
 export default function SplashScreen() {
   const restoreQuery = useRestoreSession();
+    const theme = useAppSelector((state: RootState) => state.theme.theme);
+      const themeColor = colors[theme];
   const { isBiometricEnabled } = useAppSelector(
     (state: RootState) => state.auth,
   );
@@ -57,8 +60,8 @@ export default function SplashScreen() {
   };
   if (restoreQuery.isLoading || restoreQuery.isFetching) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" />
+      <View style={[styles.container,{backgroundColor:themeColor.background}]}>
+        <ActivityIndicator size="large" color={themeColor.primary} />
       </View>
     );
   }
@@ -77,6 +80,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
 });

@@ -1,21 +1,14 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { RootStackParamList } from '../navigations/nativeStackNavigation';
 import { RouteProp } from '@react-navigation/native';
-import {
-  useDeleteProduct,
-  useProductsByCategory,
-} from '../hooks/api_hooks/productsHooks';
+import { useDeleteProduct, useProductsByCategory } from '../hooks/api_hooks/productsHooks';
 import Toast from 'react-native-toast-message';
 import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
 import { colors } from '../utils/constants/colors';
 import CustomFlatList from '../components/customFlatList';
+import { wp, hp } from '../utils/constants/responsive';
 
 type CategoryScreenRouteProp = RouteProp<RootStackParamList, 'Category'>;
 
@@ -25,10 +18,12 @@ type Props = {
 
 export default function SpecificCategoryScreen({ route }: Props) {
   const { category } = route.params;
-  const { data, isLoading, isError, isFetching, refetch } =
-    useProductsByCategory(category);
-    
+  const { data, isLoading, isError, isFetching, refetch } = useProductsByCategory(category);
   const deleteMutation = useDeleteProduct();
+
+  const theme = useAppSelector((state: RootState) => state.theme.theme);
+  const themeColor = colors[theme];
+
   const handleDelete = (id: number) => {
     deleteMutation.mutate(id, {
       onSuccess: () => {
@@ -47,8 +42,6 @@ export default function SpecificCategoryScreen({ route }: Props) {
       },
     });
   };
-  const theme = useAppSelector((state: RootState) => state.theme.theme);
-  const themeColor = colors[theme];
 
   if (isLoading) {
     return (
@@ -67,10 +60,9 @@ export default function SpecificCategoryScreen({ route }: Props) {
       </View>
     );
   }
+
   return (
-    <View
-      style={[styles.container, { backgroundColor: themeColor.background }]}
-    >
+    <View style={[styles.container, { backgroundColor: themeColor.background }]}>
       <CustomFlatList
         data={data}
         onRefresh={refetch}
@@ -82,15 +74,9 @@ export default function SpecificCategoryScreen({ route }: Props) {
 }
 
 const styles = StyleSheet.create({
-  list: {
-    padding: 10,
-  },
   container: {
     flex: 1,
-    padding: 10,
-  },
-  flatList: {
-    paddingTop: 30,
+    padding: wp(3),
   },
   center: {
     flex: 1,
@@ -98,9 +84,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   errorText: {
-    fontSize: 16,
-  },
-  row: {
-    justifyContent: 'space-between',
+    fontSize: wp(4),
   },
 });

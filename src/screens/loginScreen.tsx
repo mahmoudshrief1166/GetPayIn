@@ -16,6 +16,7 @@ import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
 import { colors } from '../utils/constants/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { wp, hp, fs } from '../utils/constants/responsive'; 
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
@@ -46,7 +47,6 @@ export default function LoginScreen() {
             text1: 'Login Successful',
             text2: `Welcome ${username}!`,
           });
-
           navigation.replace('MainTab');
         },
         onError: (error: any) => {
@@ -61,9 +61,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <View
-      style={[styles.container, { backgroundColor: themeColor.background }]}
-    >
+    <View style={[styles.container, { backgroundColor: themeColor.background }]}>
       <Text style={[styles.title, { color: themeColor.text }]}>
         GetPayIn Login
       </Text>
@@ -77,37 +75,42 @@ export default function LoginScreen() {
         </Text>
       )}
 
-      <TextInput
-        style={[
-          styles.input,
-          { borderColor: themeColor.primary, color: themeColor.inputColor },
-        ]}
-        placeholder="Username"
-        placeholderTextColor="#999"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        style={[
-          styles.input,
-          { borderColor: themeColor.primary, color: themeColor.inputColor },
-        ]}
-        placeholder="Password"
-        placeholderTextColor="#999"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry={!showPassword}
-      />
-      <TouchableOpacity
-        style={styles.eyeIcon}
-        onPress={() => setShowPassword(prev => !prev)}
-      >
-        <Icon
-          name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-          size={22}
-          color={themeColor.text}
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={[
+            styles.input,
+            { borderColor: themeColor.primary, color: themeColor.inputColor },
+          ]}
+          placeholder="Username"
+          placeholderTextColor="#999"
+          value={username}
+          onChangeText={setUsername}
         />
-      </TouchableOpacity>
+      </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={[
+            styles.input,
+            { borderColor: themeColor.primary, color: themeColor.inputColor },
+          ]}
+          placeholder="Password"
+          placeholderTextColor="#999"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!showPassword}
+        />
+        <TouchableOpacity
+          style={styles.eyeIcon}
+          onPress={() => setShowPassword(prev => !prev)}
+        >
+          <Icon
+            name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+            size={fs(22)}
+            color={themeColor.text}
+          />
+        </TouchableOpacity>
+      </View>
 
       <TouchableOpacity
         style={[styles.button, { backgroundColor: themeColor.button }]}
@@ -126,41 +129,44 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
+    paddingHorizontal: wp(5),
   },
   title: {
-    fontSize: 28,
+    fontSize: fs(28),
     fontWeight: 'bold',
-    marginBottom: 100,
+    marginBottom: hp(10),
     textAlign: 'center',
+  },
+  inputContainer: {
+    position: 'relative',
+    marginBottom: hp(2),
   },
   input: {
     borderWidth: 2,
-    borderRadius: 15,
-    padding: 12,
-    marginBottom: 12,
-    fontSize: 16,
+    borderRadius: wp(4),
+    paddingVertical: hp(1.5),
+    paddingHorizontal: wp(4),
+    fontSize: fs(16),
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: wp(4),
+    top: hp(1.5),
   },
   button: {
-    padding: 14,
-    borderRadius: 15,
+    paddingVertical: hp(1.8),
+    borderRadius: wp(4),
     alignItems: 'center',
-    marginTop: 10,
-    marginHorizontal: 70,
+    marginTop: hp(2),
+    marginHorizontal: wp(20),
   },
   buttonText: {
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: fs(16),
   },
   error: {
     fontWeight: '500',
     textAlign: 'center',
-    marginBottom: 10,
-  },
-  eyeIcon: {
-    position: 'absolute',
-    right: 30,
-    top: '61%',
-    transform: [{ translateY: -10 }],
+    marginBottom: hp(1),
   },
 });

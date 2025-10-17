@@ -6,33 +6,37 @@ import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
 import { colors } from '../utils/constants/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { USeLock } from '../hooks/regular_hooks/lockHooks';
+import { height, width } from '../utils/constants/responsive';
+
 
 const Tab = createBottomTabNavigator();
+
 
 export default function TabNavigator() {
   const theme = useAppSelector((state: RootState) => state.theme.theme);
   const themeColor = colors[theme];
-    const registerActivity = USeLock();
+
+
+  const tabBarHeight = height * 0.08; 
+  const iconSize = width * 0.06; 
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        
         headerShown: false,
         tabBarActiveTintColor: themeColor.primary,
         tabBarInactiveTintColor: themeColor.text,
         tabBarStyle: {
           backgroundColor: themeColor.background,
           borderTopColor: themeColor.primary,
-          height: 60,
-          paddingBottom: 5,
+          height: tabBarHeight,
+          paddingBottom: tabBarHeight * 0.16,
         },
         tabBarLabelStyle: {
-          fontSize: 13,
+          fontSize: width * 0.035,
           fontWeight: '500',
         },
-        tabBarIcon: ({ color, size, focused }) => {
+        tabBarIcon: ({ color, focused }) => {
           let iconName = '';
 
           if (route.name === 'AllProduct') {
@@ -41,7 +45,7 @@ export default function TabNavigator() {
             iconName = focused ? 'cog' : 'cog-outline';
           }
 
-          return <Icon name={iconName} size={24} color={color} />;
+          return <Icon name={iconName} size={iconSize} color={color} />;
         },
       })}
     >
