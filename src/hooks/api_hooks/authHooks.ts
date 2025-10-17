@@ -3,10 +3,11 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { APP_END_POINTS, BASE_URL } from '../../utils/constants/constants';
 import { setBiometricEnabled, setAuth, clearAuth } from '../../store/authSlice';
-import { clearToken, clearUser, getToken, getUser, setToken, setUser } from '../../utils/storage/mmKv';
+import { clearToken, clearUser, getTheme, getToken, getUser, setToken, setUser } from '../../utils/storage/mmKv';
 import React from 'react';
 import { RootState } from '../../store/store';
 import Toast from 'react-native-toast-message';
+import { setTheme } from '../../store/themeSlice';
 
 interface LoginPayload {
   username: string;
@@ -24,6 +25,7 @@ interface LoginResponse {
 
 export const useLogin = () => {
   const dispatch = useAppDispatch();
+  const theme=useAppSelector((state:RootState)=>state.theme.theme)
 
   return useMutation<LoginResponse, Error, LoginPayload>({
     mutationFn: async (credentials: LoginPayload) => {

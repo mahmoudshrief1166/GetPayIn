@@ -12,12 +12,17 @@ import { useLogin } from '../hooks/api_hooks/authHooks';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigations/nativeStackNavigation';
+import { useAppSelector } from '../hooks/regular_hooks/hooks';
+import { RootState } from '../store/store';
+import { colors } from '../utils/constants/colors';
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const loginMutation = useLogin();
   const navigation =useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const theme = useAppSelector((state: RootState) => state.theme.theme);
+    const themeColor = colors[theme];
 
 
   const handleLogin = () => {
@@ -55,25 +60,25 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>GetPayIn Login</Text>
+    <View style={[styles.container,{backgroundColor:themeColor.background}]}>
+      <Text style={[styles.title,{color:themeColor.text}]}>GetPayIn Login</Text>
 
       {loginMutation.isPending && (
-        <ActivityIndicator size="large" color="#007AFF" />
+        <ActivityIndicator size="large" color={themeColor.primary} />
       )}
       {loginMutation.isError && (
-        <Text style={styles.error}>Login failed. Please try again.</Text>
+        <Text style={[styles.error,{color:themeColor.colorError}]}>Login failed. Please try again.</Text>
       )}
 
       <TextInput
-        style={styles.input}
+        style={[styles.input,{borderColor:themeColor.primary,color:themeColor.inputColor}]}
         placeholder="Username"
         placeholderTextColor="#999"
         value={username}
         onChangeText={setUsername}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input,{borderColor:themeColor.primary,color:themeColor.inputColor}]}
         placeholder="Password"
         placeholderTextColor="#999"
         value={password}
@@ -82,11 +87,11 @@ export default function LoginScreen() {
       />
 
       <TouchableOpacity
-        style={styles.button}
+        style={[styles.button,{backgroundColor:themeColor.button}]}
         onPress={handleLogin}
         disabled={loginMutation.isPending}
       >
-        <Text style={styles.buttonText}>
+        <Text style={[styles.buttonText,{color:themeColor.buttonText}]}>
           {loginMutation.isPending ? 'Logging in...' : 'Login'}
         </Text>
       </TouchableOpacity>
@@ -100,38 +105,32 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#fff',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 100,
     textAlign: 'center',
-    color: '#007AFF',
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
+    borderWidth: 2,
+    borderRadius: 15,
     padding: 12,
     marginBottom: 12,
     fontSize: 16,
-    color: '#333',
   },
   button: {
-    backgroundColor: '#007AFF',
     padding: 14,
-    borderRadius: 8,
+    borderRadius: 15,
     alignItems: 'center',
     marginTop: 10,
+    marginHorizontal:70
   },
   buttonText: {
-    color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
   },
   error: {
-    color: 'red',
     fontWeight: '500',
     textAlign: 'center',
     marginBottom: 10,

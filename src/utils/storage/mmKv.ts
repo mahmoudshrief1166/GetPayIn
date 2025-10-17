@@ -28,6 +28,59 @@ export const clearToken = () => {
     console.log('MMKV clearToken error:', error);
   }
 };
+///Theme management functions
+export const setLocalTheme = (theme: string) => {
+  try {
+    storage.set('theme', theme);
+    console.log('Theme saved:', theme);
+  } catch (error) {
+    console.log('MMKV setTheme error:', error);
+  }
+};
+
+export const getTheme = (): string | null => {
+  try {
+    return storage.getString('theme') || null;
+  } catch (error) {
+    console.log('MMKV getTheme error:', error);
+    return null;
+  }
+};
+
+export const clearTheme = () => {
+  try {
+    storage.delete('theme');
+  } catch (error) {
+    console.log('MMKV clearTheme error:', error);
+  }
+};
+
+///password fallback
+export const setLocalPassword = (password:string) => {
+  try {
+    storage.set('password', password);
+    console.log('password saved:',);
+  } catch (error) {
+    console.log('MMKV setToken error:', error);
+  }
+};
+
+export const getPassword = (): string | null => {
+  try {
+    return storage.getString('password') || null;
+  } catch (error) {
+    console.log('MMKV getpassword error:', error);
+    return null;
+  }
+};
+
+export const clearPassword = () => {
+  try {
+    storage.delete('password');
+  } catch (error) {
+    console.log('MMKV clearpassword error:', error);
+  }
+};
 
 ///user management functions
 export const setUser=(user:string)=>{

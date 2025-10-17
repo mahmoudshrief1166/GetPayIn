@@ -79,9 +79,13 @@ export const useDeleteProduct = () => {
     mutationFn: async (id: number) => {
       await new Promise<void>((res) => setTimeout(res, 300));
       deleteProduct(id);
+      return id
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey:['products']});
+    onSuccess: (id:number) => {
+      queryClient.setQueryData(['products'],(oldData:any)=>{
+        if(!oldData)return oldData
+        return oldData.filter((product:any)=>product.id!==id)
+      })
     },
   });
 };

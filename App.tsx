@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { store, RootState } from './src/store/store';
 import Toast from 'react-native-toast-message';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { NavigationContainer } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import NativeStackNavigation from './src/navigations/nativeStackNavigation';
 import { View } from 'react-native';
 import { USeLock } from './src/hooks/regular_hooks/lockHooks';
@@ -30,10 +30,13 @@ function AppContent() {
   const isAuthenticated = useAppSelector(
     (state: RootState) => state.auth.isAuthenticated,
   );
+  const theme=useAppSelector(
+    (state: RootState) => state.theme.theme,
+  );
 
   return (
     <>
-      <NavigationContainer>
+      <NavigationContainer theme={theme==='dark'?DarkTheme:DefaultTheme} >
         <View
           style={{ flex: 1 }}
           onStartShouldSetResponder={() => {

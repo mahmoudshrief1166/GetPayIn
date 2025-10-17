@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer  from "./authSlice";
 import lockReducer from "./lockSlice"
 import offlineReducer from "./offlineSlice"
+import themeReducer from './themeSlice'
 
 
 export const store=configureStore({
@@ -9,6 +10,7 @@ export const store=configureStore({
         auth:authReducer,
         lock:lockReducer,
         offline:offlineReducer,
+        theme:themeReducer
 
     },
     middleware:(getDefaultMiddleware)=>

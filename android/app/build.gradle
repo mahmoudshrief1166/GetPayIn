@@ -105,6 +105,13 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
@@ -118,4 +125,22 @@ dependencies {
     }
 }
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
+// Ensure Kotlin uses the Java 21 toolchain to match compileOptions
+kotlin {
+    jvmToolchain(17)
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+// Ensure Java compilation tasks use Java 21 toolchain as well
+tasks.withType(org.gradle.api.tasks.compile.JavaCompile).configureEach {
+    javaCompiler = javaToolchains.compilerFor {
+        languageVersion = org.gradle.jvm.toolchain.JavaLanguageVersion.of(17)
+    }
+}
 

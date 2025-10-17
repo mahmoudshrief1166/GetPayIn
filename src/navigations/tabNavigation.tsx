@@ -1,96 +1,57 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AllProductScreen from '../screens/allProductScreen';
-import { View, TouchableOpacity, Text } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../hooks/regular_hooks/hooks';
-import { clearAuth } from '../store/authSlice';
-import { clearToken, clearUser } from '../utils/storage/mmKv';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from './nativeStackNavigation';
+import SettingsScreen from '../screens/settingScreen';
+import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
-import Toast from 'react-native-toast-message';
+import { colors } from '../utils/constants/colors';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator();
 
-function LogoutScreen() {
-  const dispatch = useAppDispatch();
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const rootNavigation = navigation.getParent();
-  const isConnected = useAppSelector(
-    (state: RootState) => state.offline.isConnected, 
-  );
-
-  const handleLogOut = () => {
-
-    dispatch(clearAuth());
-    clearToken();
-    clearUser();
-
-    if (!isConnected) {
-      Toast.show({
-        type: 'info',
-        text1: 'Offline logout',
-        text2: 'You are logged out locally. Server sync will happen later.',
-      });
-    }
-
-
-    rootNavigation?.reset({
-      index: 0,
-      routes: [{ name: 'Login' }],
-    });
-  };
-
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-      }}
-    >
-      <TouchableOpacity
-        onPress={handleLogOut}
-        style={{
-          backgroundColor: '#FF3B30',
-          paddingVertical: 12,
-          paddingHorizontal: 25,
-          borderRadius: 8,
-        }}
-      >
-        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>
-          Log Out
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-
 export default function TabNavigator() {
+  const theme = useAppSelector((state: RootState) => state.theme.theme);
+  const themeColor = colors[theme];
+
   return (
-    <>
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarActiveTintColor: '#007AFF',
-          tabBarLabelStyle: { fontSize: 14 },
-        }}
-      >
-        <Tab.Screen
-          name="AllProduct"
-          component={AllProductScreen}
-          options={{ tabBarLabel: 'All Products' }}
-        />
-        <Tab.Screen
-          name="SignOut"
-          component={LogoutScreen}
-          options={{ tabBarLabel: 'Sign Out' }}
-        />
-      </Tab.Navigator>
-    </>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarActiveTintColor: themeColor.primary,
+        tabBarInactiveTintColor: themeColor.text,
+        tabBarStyle: {
+          backgroundColor: themeColor.background,
+          borderTopColor: themeColor.primary,
+          height: 60,
+          paddingBottom: 5,
+        },
+        tabBarLabelStyle: {
+          fontSize: 13,
+          fontWeight: '500',
+        },
+        tabBarIcon: ({ color, size, focused }) => {
+          let iconName = '';
+
+          if (route.name === 'AllProduct') {
+            iconName = focused ? 'shopping' : 'shopping-outline';
+          } else if (route.name === 'Settings') {
+            iconName = focused ? 'cog' : 'cog-outline';
+          }
+
+          return <Icon name={iconName} size={24} color={color} />;
+        },
+      })}
+    >
+      <Tab.Screen
+        name="AllProduct"
+        component={AllProductScreen}
+        options={{ tabBarLabel: 'Products' }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{ tabBarLabel: 'Settings' }}
+      />
+    </Tab.Navigator>
   );
 }

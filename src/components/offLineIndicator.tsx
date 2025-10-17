@@ -3,11 +3,14 @@ import {  Text, Animated, StyleSheet } from 'react-native';
 import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
 import { UseOffline } from '../hooks/regular_hooks/offlineHook';
+import { colors } from '../utils/constants/colors';
 
 
 export default function OfflineIndicator() {
   const isConnected=useAppSelector((state:RootState)=>state.offline.isConnected)
   const [slideAnimate] = useState(new Animated.Value(-50));
+    const theme = useAppSelector((state: RootState) => state.theme.theme);
+    const themeColor = colors[theme];
   UseOffline()
   useEffect(() => {
     Animated.timing(slideAnimate, {
@@ -18,9 +21,9 @@ export default function OfflineIndicator() {
   }, [isConnected]);
   return (
     <Animated.View
-      style={[styles.container, { transform: [{ translateY: slideAnimate }] }]}
+      style={[styles.container, { transform: [{ translateY: slideAnimate }], backgroundColor:themeColor.background }]}
     >
-      <Text style={styles.text}>You're offline</Text>
+      <Text style={[styles.text,{color:themeColor.colorError}]}>You're offline</Text>
     </Animated.View>
   );
 }
@@ -30,14 +33,13 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#ff3b30',
     padding: 10,
     zIndex: 1000,
     alignItems: 'center',
     marginTop:40
   },
   text: {
-    color: '#fff',
+    fontSize:15,
     fontWeight: '600',
   },
 });

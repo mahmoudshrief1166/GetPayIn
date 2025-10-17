@@ -10,7 +10,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigations/nativeStackNavigation';
 import { setBiometricEnabled } from '../store/authSlice';
 import React from 'react';
-import { getToken } from '../utils/storage/mmKv';
+import { getTheme, getToken } from '../utils/storage/mmKv';
 
 export default function SplashScreen() {
   const restoreQuery = useRestoreSession();
