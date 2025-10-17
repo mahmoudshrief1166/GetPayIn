@@ -15,15 +15,17 @@ import { RootStackParamList } from '../navigations/nativeStackNavigation';
 import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
 import { colors } from '../utils/constants/colors';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const loginMutation = useLogin();
-  const navigation =useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-    const theme = useAppSelector((state: RootState) => state.theme.theme);
-    const themeColor = colors[theme];
-
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const theme = useAppSelector((state: RootState) => state.theme.theme);
+  const themeColor = colors[theme];
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
     if (!username.trim() || !password.trim()) {
@@ -45,7 +47,6 @@ export default function LoginScreen() {
             text2: `Welcome ${username}!`,
           });
 
-
           navigation.replace('MainTab');
         },
         onError: (error: any) => {
@@ -60,42 +61,63 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={[styles.container,{backgroundColor:themeColor.background}]}>
-      <Text style={[styles.title,{color:themeColor.text}]}>GetPayIn Login</Text>
+    <View
+      style={[styles.container, { backgroundColor: themeColor.background }]}
+    >
+      <Text style={[styles.title, { color: themeColor.text }]}>
+        GetPayIn Login
+      </Text>
 
       {loginMutation.isPending && (
         <ActivityIndicator size="large" color={themeColor.primary} />
       )}
       {loginMutation.isError && (
-        <Text style={[styles.error,{color:themeColor.colorError}]}>Login failed. Please try again.</Text>
+        <Text style={[styles.error, { color: themeColor.colorError }]}>
+          Login failed. Please try again.
+        </Text>
       )}
 
       <TextInput
-        style={[styles.input,{borderColor:themeColor.primary,color:themeColor.inputColor}]}
+        style={[
+          styles.input,
+          { borderColor: themeColor.primary, color: themeColor.inputColor },
+        ]}
         placeholder="Username"
         placeholderTextColor="#999"
         value={username}
         onChangeText={setUsername}
       />
       <TextInput
-        style={[styles.input,{borderColor:themeColor.primary,color:themeColor.inputColor}]}
+        style={[
+          styles.input,
+          { borderColor: themeColor.primary, color: themeColor.inputColor },
+        ]}
         placeholder="Password"
         placeholderTextColor="#999"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
+        secureTextEntry={!showPassword}
       />
+      <TouchableOpacity
+        style={styles.eyeIcon}
+        onPress={() => setShowPassword(prev => !prev)}
+      >
+        <Icon
+          name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+          size={22}
+          color={themeColor.text}
+        />
+      </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.button,{backgroundColor:themeColor.button}]}
+        style={[styles.button, { backgroundColor: themeColor.button }]}
         onPress={handleLogin}
         disabled={loginMutation.isPending}
       >
-        <Text style={[styles.buttonText,{color:themeColor.buttonText}]}>
+        <Text style={[styles.buttonText, { color: themeColor.buttonText }]}>
           {loginMutation.isPending ? 'Logging in...' : 'Login'}
         </Text>
       </TouchableOpacity>
-
     </View>
   );
 }
@@ -124,7 +146,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: 'center',
     marginTop: 10,
-    marginHorizontal:70
+    marginHorizontal: 70,
   },
   buttonText: {
     fontWeight: 'bold',
@@ -134,5 +156,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     marginBottom: 10,
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: 30,
+    top: '61%',
+    transform: [{ translateY: -10 }],
   },
 });

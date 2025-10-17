@@ -11,8 +11,10 @@ import { clearToken, clearUser } from '../utils/storage/mmKv';
 import Toast from 'react-native-toast-message';
 import { toogleTheme } from '../store/themeSlice';
 import { colors } from '../utils/constants/colors';
+import { USeLock } from '../hooks/regular_hooks/lockHooks';
 
 export default function SettingsScreen() {
+    const registerActivity = USeLock();
   const dispatch = useAppDispatch();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -43,7 +45,8 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: themeColor.background }]}>
+    <View
+    style={[styles.container, { backgroundColor: themeColor.background }]}>
       <Text style={[styles.title, { color: themeColor.text }]}>Settings</Text>
 
       <View style={styles.buttonsContainer}>

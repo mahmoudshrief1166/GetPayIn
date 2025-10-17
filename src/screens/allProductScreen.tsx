@@ -1,28 +1,19 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  StyleSheet,
-  FlatList,
-  RefreshControl,
-} from 'react-native';
-import {
-  useAllProducts,
-  useDeleteProduct,
-} from '../hooks/api_hooks/productsHooks';
-import ProductCard from '../components/productCard';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { useAllProducts, useDeleteProduct } from '../hooks/api_hooks/productsHooks';
 import Toast from 'react-native-toast-message';
 import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
 import { colors } from '../utils/constants/colors';
 import DropDownComponent from '../components/dropDownList';
+import CustomFlatList from '../components/customFlatList';
 
 export default function AllProductScreen() {
   const { data, isError, isLoading, refetch, isFetching } = useAllProducts();
   const deleteMutation = useDeleteProduct();
   const theme = useAppSelector((state: RootState) => state.theme.theme);
   const themeColor = colors[theme];
+
   const handleDelete = (id: number) => {
     deleteMutation.mutate(id, {
       onSuccess: () => {
@@ -59,36 +50,21 @@ export default function AllProductScreen() {
       </View>
     );
   }
+
   return (
-    <View
-      style={[styles.container, { backgroundColor: themeColor.background }]}
-    >
+    <View style={[styles.container, { backgroundColor: themeColor.background }]}>
       <DropDownComponent />
-      <FlatList
-      key={"two-columns"}
+      <CustomFlatList
         data={data}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({ item }) => (
-          <ProductCard product={item} onDelete={handleDelete} />
-        )}
-        contentContainerStyle={styles.list}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-        refreshControl={
-          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
-        }
+        onRefresh={refetch}
+        refreshing={isFetching}
+        onDelete={handleDelete}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  flatList: {
-    paddingTop: 30,
-  },
-  list: {
-    padding: 10,
-  },
   center: {
     flex: 1,
     justifyContent: 'center',

@@ -8,7 +8,7 @@ interface OfflineState{
 }
 
 const initialState:OfflineState={
-    isConnected: false,
+    isConnected: (undefined) as unknown as true|false ,
     connectionType:undefined,
     lastChecked: Date.now(),
 }

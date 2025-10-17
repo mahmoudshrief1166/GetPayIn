@@ -29,19 +29,21 @@ export default function BiometricModal({ isVisible, onUnlock }: Props) {
   const theme = useAppSelector((state: RootState) => state.theme.theme);
   const themeColor = colors[theme];
 
-
   useEffect(() => {
-    const rnBiometrics = new ReactNativeBiometrics();
-    setLocalPassword('1234')
+    if (!isVisible) return;
 
-    const authenticate = async () => {
+    setLocalPassword('1234');
+
+    const rnBiometrics = new ReactNativeBiometrics();
+
+
+    const timer = setTimeout(async () => {
       try {
         setLoading(true);
         setAuthFailed(false);
         setFallback(false);
 
-        const { available, biometryType } =
-          await rnBiometrics.isSensorAvailable();
+        const { available, biometryType } = await rnBiometrics.isSensorAvailable();
 
         if (!available) {
           setFallback(true);
@@ -59,7 +61,7 @@ export default function BiometricModal({ isVisible, onUnlock }: Props) {
         if (result.success) {
           onUnlock();
         } else {
-          setFallback(true); 
+          setFallback(true);
         }
       } catch (error) {
         console.log('Biometric auth failed:', error);
@@ -67,19 +69,16 @@ export default function BiometricModal({ isVisible, onUnlock }: Props) {
       } finally {
         setLoading(false);
       }
-    };
+    }, 0);
 
-    if (isVisible) {
-      authenticate();
-    }
+    return () => clearTimeout(timer);
   }, [isVisible]);
 
   const handlePasswordSubmit = () => {
-
-       const savedPassword = getPassword();
+    const savedPassword = getPassword();
     if (password.trim() === savedPassword?.trim()) {
       onUnlock();
-      setPassword('')
+      setPassword('');
     } else {
       setAuthFailed(true);
     }
@@ -87,89 +86,45 @@ export default function BiometricModal({ isVisible, onUnlock }: Props) {
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent={false}>
-      <View
-        style={[
-          styles.fullContainer,
-          { backgroundColor: themeColor.background },
-        ]}
-      >
+      <View style={[styles.fullContainer, { backgroundColor: themeColor.background }]}>
         {loading ? (
           <>
             <ActivityIndicator size="large" color={themeColor.primary} />
-            <Text style={[styles.message, { color: themeColor.text }]}>
-              Authenticating...
-            </Text>
+            <Text style={[styles.message, { color: themeColor.text }]}>Authenticating...</Text>
           </>
         ) : fallback ? (
           <>
-            <Icon
-              name="lock-outline"
-              size={80}
-              color={themeColor.primary}
-              style={{ marginBottom: 10 }}
-            />
-            <Text style={[styles.title, { color: themeColor.primary }]}>
-              Enter Password
-            </Text>
+            <Icon name="lock-outline" size={80} color={themeColor.primary} style={{ marginBottom: 10 }} />
+            <Text style={[styles.title, { color: themeColor.primary }]}>Enter Password</Text>
             <TextInput
-              style={[
-                styles.input,
-                {
-                  borderColor: themeColor.primary,
-                  color: themeColor.text,
-                },
-              ]}
+              style={[styles.input, { borderColor: themeColor.primary, color: themeColor.text }]}
               secureTextEntry
               placeholder="Enter your password"
               placeholderTextColor={themeColor.placeholderColor}
               value={password}
               onChangeText={setPassword}
             />
-            {authFailed && (
-              <Text style={[styles.error, { color: 'red' }]}>
-                Incorrect password, try again.
-              </Text>
-            )}
+            {authFailed && <Text style={[styles.error, { color: 'red' }]}>Incorrect password, try again.</Text>}
 
-            <TouchableOpacity
-              style={[
-                styles.retryBtn,
-                { backgroundColor: themeColor.primary },
-              ]}
-              onPress={handlePasswordSubmit}
-            >
+            <TouchableOpacity style={[styles.retryBtn, { backgroundColor: themeColor.primary }]} onPress={handlePasswordSubmit}>
               <Text style={styles.retryText}>Unlock</Text>
             </TouchableOpacity>
           </>
         ) : authFailed ? (
           <>
             <Icon name="fingerprint-off" size={80} color="#FF3B30" />
-            <Text style={[styles.title, { color: '#FF3B30' }]}>
-              Authentication Failed
-            </Text>
-            <Text style={[styles.message, { color: themeColor.text }]}>
-              Please try again or use password.
-            </Text>
+            <Text style={[styles.title, { color: '#FF3B30' }]}>Authentication Failed</Text>
+            <Text style={[styles.message, { color: themeColor.text }]}>Please try again or use password.</Text>
 
-            <TouchableOpacity
-              style={[
-                styles.retryBtn,
-                { backgroundColor: themeColor.primary },
-              ]}
-              onPress={() => setFallback(true)}
-            >
+            <TouchableOpacity style={[styles.retryBtn, { backgroundColor: themeColor.primary }]} onPress={() => setFallback(true)}>
               <Text style={styles.retryText}>Use Password</Text>
             </TouchableOpacity>
           </>
         ) : (
           <>
             <Icon name="fingerprint" size={100} color={themeColor.primary} />
-            <Text style={[styles.title, { color: themeColor.primary }]}>
-              Authenticate
-            </Text>
-            <Text style={[styles.message, { color: themeColor.text }]}>
-              Use your fingerprint or Face ID to continue.
-            </Text>
+            <Text style={[styles.title, { color: themeColor.primary }]}>Authenticate</Text>
+            <Text style={[styles.message, { color: themeColor.text }]}>Use your fingerprint or Face ID to continue.</Text>
           </>
         )}
       </View>

@@ -6,16 +6,19 @@ import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
 import { colors } from '../utils/constants/colors';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { USeLock } from '../hooks/regular_hooks/lockHooks';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
   const theme = useAppSelector((state: RootState) => state.theme.theme);
   const themeColor = colors[theme];
+    const registerActivity = USeLock();
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        
         headerShown: false,
         tabBarActiveTintColor: themeColor.primary,
         tabBarInactiveTintColor: themeColor.text,

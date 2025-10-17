@@ -4,8 +4,6 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  FlatList,
-  RefreshControl,
 } from 'react-native';
 import { RootStackParamList } from '../navigations/nativeStackNavigation';
 import { RouteProp } from '@react-navigation/native';
@@ -13,11 +11,11 @@ import {
   useDeleteProduct,
   useProductsByCategory,
 } from '../hooks/api_hooks/productsHooks';
-import ProductCard from '../components/productCard';
 import Toast from 'react-native-toast-message';
 import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
 import { colors } from '../utils/constants/colors';
+import CustomFlatList from '../components/customFlatList';
 
 type CategoryScreenRouteProp = RouteProp<RootStackParamList, 'Category'>;
 
@@ -73,18 +71,11 @@ export default function SpecificCategoryScreen({ route }: Props) {
     <View
       style={[styles.container, { backgroundColor: themeColor.background }]}
     >
-      <FlatList
+      <CustomFlatList
         data={data}
-        keyExtractor={item => item.id.toString()}
-        contentContainerStyle={styles.list}
-        renderItem={({ item }) => (
-          <ProductCard product={item} onDelete={handleDelete} />
-        )}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-        refreshControl={
-          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
-        }
+        onRefresh={refetch}
+        refreshing={isFetching}
+        onDelete={handleDelete}
       />
     </View>
   );
