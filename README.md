@@ -1,97 +1,111 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 🛍️ GetPayIn Challenge App
 
-# Getting Started
+## 📂 Repository
+https://github.com/mahmoudshrief1166/GetPayIn
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## 📱 Overview
+This React Native application lets users browse products, filter by categories (via dropdown), and includes offline handling, auto-lock with biometrics (and password fallback), theming, and role-based admin actions.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+---
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## ⚙️ Setup & Run Instructions
 
-```sh
-# Using npm
-npm start
+### 1. Clone the repository
+```bash
+git clone https://github.com/mahmoudshrief1166/GetPayIn.git
+cd GetPayInChallenge
 
-# OR using Yarn
-yarn start
-```
+### 2. Install dependencies
+npm install
+# or
+yarn install
 
-## Step 2: Build and run your app
+### 3. iOS (macOS only)
+cd ios
+pod install
+cd ..
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### 4. Run the app
+Android:
+npx react-native run-android
 
-### Android
+iOS:
+npx react-native run-ios
 
-```sh
-# Using npm
-npm run android
+Superadmin (testing)
+Use this account to test admin-only features (delete product, etc.):
+username: emilys
+password: emilyspass
 
-# OR using Yarn
-yarn android
-```
+Biometric fallback password (for modal password fallback / dev testing):
+fallback password: 1234
 
-### iOS
+🛒 Category Dropdown Behavior
+The app supports dynamic categories. The dropdown lists all available categories from the API — users select any category and the products list will filter accordingly. The app is not hardcoded to a single category.
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+Main Features
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+Authentication (login + token stored in MMKV)
 
-```sh
-bundle install
-```
+Session restore & biometric modal + password fallback
 
-Then, and every time you update your native dependencies, run:
+Auto-lock after inactivity / when app goes to background
 
-```sh
-bundle exec pod install
-```
+Products listing (2-column responsive grid) & pull-to-refresh
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+Category filtering via dropdown (dynamic)
 
-```sh
-# Using npm
-npm run ios
+Offline indicator & basic offline cache (MMKV)
 
-# OR using Yarn
-yarn ios
-```
+Theme support (light/dark)
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+Role-based UI: admin-only delete button
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+React Query for data fetching & caching
 
-## Step 3: Modify your app
+Redux Toolkit for app state
 
-Now that you have successfully run the app, let's make changes!
+Responsive sizing using percentage helpers
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+🚀 Build (Release) - Android
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+Generate a signed release APK / AAB:
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+Prepare Keystore and set properties in android/gradle.properties (see Android docs).
 
-## Congratulations! :tada:
+Build release AP
+cd android
+./gradlew assembleRelease
 
-You've successfully run and modified your React Native App. :partying_face:
+Output APK:
+android/app/build/outputs/apk/release/app-release.apk
 
-### Now what?
+Install to device:
+adb install android/app/build/outputs/apk/release/app-release.apk
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+⚖️ Trade-offs & If I Had More Time
+Trade-offs made
+Product deletion is simulated locally (no real backend deletion).
+Basic test coverage only (core flows).
+Biometric fallback uses a local stored test password for demo.
 
-# Troubleshooting
+If I had more time
+Add integration/e2e tests and improve unit coverage.
+Implement server-side product CRUD and proper secure fallback.
+Add pagination/infinite scroll and more robust offline sync.
+Polish animations, add accessibility and localization.
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+🔧 Tech Stack
+React Native + TypeScript
+Redux Toolkit
+React Query
+react-native-mmkv (local storage)
+react-native-biometrics
+react-native-toast-message
+react-navigation
 
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+👤 Author
+Mahmoud Shrief
+React Native Developer
