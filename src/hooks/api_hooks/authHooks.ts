@@ -66,7 +66,7 @@ export const useRestoreSession = () => {
       );
       return response.data;
     },
-    enabled: !!token && isConnected, // نفّذ فقط لو متصل بالسيرفر
+    enabled: !!token && isConnected, 
     retry: (failureCount, error) => axios.isAxiosError(error) && !error.response && failureCount < 3,
     retryDelay: 2000,
   });
