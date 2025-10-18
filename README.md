@@ -16,96 +16,110 @@ This React Native application lets users browse products, filter by categories (
 ```bash
 git clone https://github.com/mahmoudshrief1166/GetPayIn.git
 cd GetPayInChallenge
+```
 
 ### 2. Install dependencies
+```bash
 npm install
 # or
 yarn install
+```
 
 ### 3. iOS (macOS only)
+```bash
 cd ios
 pod install
 cd ..
+```
 
 ### 4. Run the app
-Android:
-npx react-native run-android
+- Android:
+	```bash
+	npx react-native run-android
+	```
 
-iOS:
-npx react-native run-ios
+- iOS:
+	```bash
+	npx react-native run-ios
+	```
 
-Superadmin (testing)
+**Superadmin (testing)**
 Use this account to test admin-only features (delete product, etc.):
-username: emilys
-password: emilyspass
 
-Biometric fallback password (for modal password fallback / dev testing):
-fallback password: 1234
+- username: `emilys`
+- password: `emilyspass`
 
-🛒 Category Dropdown Behavior
+**Biometric fallback password** (for modal password fallback / dev testing):
+
+- fallback password: `1234`
+
+🛒 **Category Dropdown Behavior**
+
 The app supports dynamic categories. The dropdown lists all available categories from the API — users select any category and the products list will filter accordingly. The app is not hardcoded to a single category.
 
-Main Features
+### Main Features
 
-Authentication (login + token stored in MMKV)
+- Authentication (login + token stored in MMKV)
+- Session restore & biometric modal + password fallback
+- Auto-lock after inactivity / when app goes to background
+- Products listing (2-column responsive grid) & pull-to-refresh
+- Category filtering via dropdown (dynamic)
+- Offline indicator & basic offline cache (MMKV)
+- Theme support (light/dark)
+- Role-based UI: admin-only delete button
+- React Query for data fetching & caching
+- Redux Toolkit for app state
+- Responsive sizing using percentage helpers
 
-Session restore & biometric modal + password fallback
-
-Auto-lock after inactivity / when app goes to background
-
-Products listing (2-column responsive grid) & pull-to-refresh
-
-Category filtering via dropdown (dynamic)
-
-Offline indicator & basic offline cache (MMKV)
-
-Theme support (light/dark)
-
-Role-based UI: admin-only delete button
-
-React Query for data fetching & caching
-
-Redux Toolkit for app state
-
-Responsive sizing using percentage helpers
-
-🚀 Build (Release) - Android
+🚀 **Build (Release) - Android**
 
 Generate a signed release APK / AAB:
 
-Prepare Keystore and set properties in android/gradle.properties (see Android docs).
+Prepare Keystore and set properties in `android/gradle.properties` (see Android docs).
 
-Build release AP
+Build release APK:
+
+```bash
 cd android
 ./gradlew assembleRelease
+```
 
 Output APK:
-android/app/build/outputs/apk/release/app-release.apk
+
+`android/app/build/outputs/apk/release/app-release.apk`
 
 Install to device:
+
+```bash
 adb install android/app/build/outputs/apk/release/app-release.apk
+```
 
-⚖️ Trade-offs & If I Had More Time
-Trade-offs made
-Product deletion is simulated locally (no real backend deletion).
-Basic test coverage only (core flows).
-Biometric fallback uses a local stored test password for demo.
+⚖️ **Trade-offs & If I Had More Time**
 
-If I had more time
-Add integration/e2e tests and improve unit coverage.
-Implement server-side product CRUD and proper secure fallback.
-Add pagination/infinite scroll and more robust offline sync.
-Polish animations, add accessibility and localization.
+**Trade-offs made**
 
-🔧 Tech Stack
-React Native + TypeScript
-Redux Toolkit
-React Query
-react-native-mmkv (local storage)
-react-native-biometrics
-react-native-toast-message
-react-navigation
+- Product deletion is simulated locally (no real backend deletion).
+- Basic test coverage only (core flows).
+- Biometric fallback uses a local stored test password for demo.
 
-👤 Author
-Mahmoud Shrief
-React Native Developer
+**If I had more time**
+
+- Add integration/e2e tests and improve unit coverage.
+- Implement server-side product CRUD and proper secure fallback.
+- Add pagination/infinite scroll and more robust offline sync.
+- Polish animations, add accessibility and localization.
+
+🔧 **Tech Stack**
+
+- React Native + TypeScript
+- Redux Toolkit
+- React Query
+- react-native-mmkv (local storage)
+- react-native-biometrics
+- react-native-toast-message
+- react-navigation
+- react-native-vector-icons/MaterialCommunityIcons
+
+👤 **Author**
+
+Mahmoud Shrief — React Native Developer
