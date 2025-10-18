@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { RootStackParamList } from '../navigations/nativeStackNavigation';
 import { RouteProp } from '@react-navigation/native';
-import { useDeleteProduct, useProductsByCategory } from '../hooks/api_hooks/productsHooks';
+import { useDeleteCategoryProduct, useProductsByCategory } from '../hooks/api_hooks/productsHooks';
 import Toast from 'react-native-toast-message';
 import { useAppSelector } from '../hooks/regular_hooks/hooks';
 import { RootState } from '../store/store';
@@ -19,7 +19,7 @@ type Props = {
 export default function SpecificCategoryScreen({ route }: Props) {
   const { category } = route.params;
   const { data, isLoading, isError, isFetching, refetch } = useProductsByCategory(category);
-  const deleteMutation = useDeleteProduct();
+  const deleteMutation = useDeleteCategoryProduct(category);
 
   const theme = useAppSelector((state: RootState) => state.theme.theme);
   const themeColor = colors[theme];

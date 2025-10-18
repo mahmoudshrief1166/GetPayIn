@@ -89,3 +89,27 @@ export const useDeleteProduct = () => {
     },
   });
 };
+
+export const deleteCategoryProduct = (category:string,id:number)=>{
+  // local storage removal
+  setCategoryProducts(category, getCategoryProducts(category).filter((p:any)=>p.id!==id));
+}
+
+export const useDeleteCategoryProduct = (category:string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: number) => {
+      await new Promise<void>((res) => setTimeout(res, 300));
+      // use mmkv helper
+      setCategoryProducts(category, getCategoryProducts(category).filter((p:any)=>p.id!==id));
+      return id;
+    },
+    onSuccess: (id:number) => {
+      queryClient.setQueryData(['products', category], (oldData:any) => {
+        if (!oldData) return oldData;
+        return oldData.filter((product:any) => product.id !== id);
+      });
+    },
+  });
+};

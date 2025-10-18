@@ -3,11 +3,10 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { APP_END_POINTS, BASE_URL } from '../../utils/constants/constants';
 import { setBiometricEnabled, setAuth, clearAuth } from '../../store/authSlice';
-import { clearToken, clearUser, getTheme, getToken, getUser, setToken, setUser } from '../../utils/storage/mmKv';
+import { clearToken, clearUser, getToken, getUser, setToken, setUser } from '../../utils/storage/mmKv';
 import React from 'react';
 import { RootState } from '../../store/store';
 import Toast from 'react-native-toast-message';
-import { setTheme } from '../../store/themeSlice';
 
 interface LoginPayload {
   username: string;
@@ -25,7 +24,6 @@ interface LoginResponse {
 
 export const useLogin = () => {
   const dispatch = useAppDispatch();
-  const theme=useAppSelector((state:RootState)=>state.theme.theme)
 
   return useMutation<LoginResponse, Error, LoginPayload>({
     mutationFn: async (credentials: LoginPayload) => {
@@ -46,7 +44,6 @@ export const useLogin = () => {
       }
     },
     onError: error => {
-      console.log('Login Error:', error.message);
       Toast.show({ type: 'error', text1: 'Login Failed', text2: error.message });
     },
   });
@@ -76,7 +73,6 @@ export const useRestoreSession = () => {
 
   React.useEffect(() => {
     if (!isConnected && token && localUser) {
-      console.log('Offline mode — restoring local session');
       dispatch(setAuth({ user: localUser, token: token }));
       return;
     }
@@ -89,16 +85,11 @@ export const useRestoreSession = () => {
       if (axios.isAxiosError(query.error)) {
         const status = query.error.response?.status;
         if (status === 401 || status === 403) {
-          console.log('Session restore failed — logging out');
           clearToken();
           clearUser();
           dispatch(clearAuth());
-        } else {
-          console.log('Server error during session restore:', status);
-        }
-      } else {
-        console.log('Unknown error during session restore:', query.error);
-      }
+        } 
+      } 
     }
   }, [query.isSuccess, query.isError, isConnected]);
 

@@ -30,7 +30,6 @@ export default function SplashScreen() {
     }
     if (restoreQuery?.isSuccess) {
       dispatch(setBiometricEnabled(true));
-      console.log('success')
     }
 
     if (
@@ -38,7 +37,6 @@ export default function SplashScreen() {
       restoreQuery?.error &&
       (restoreQuery?.error as any).response === undefined 
     ) {
-      console.log('Offline mode — proceeding to app');
       dispatch(setBiometricEnabled(true));
 
       return;

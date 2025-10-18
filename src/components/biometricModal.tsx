@@ -64,7 +64,6 @@ export default function BiometricModal({ isVisible, onUnlock }: Props) {
           setFallback(true);
         }
       } catch (error) {
-        console.log('Biometric auth failed:', error);
         setFallback(true);
       } finally {
         setLoading(false);
