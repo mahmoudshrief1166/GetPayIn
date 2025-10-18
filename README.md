@@ -15,7 +15,7 @@ This React Native application lets users browse products, filter by categories (
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/mahmoudshrief1166/GetPayIn.git
-cd GetPayInChallenge
+cd GetPayIn
 ```
 
 ### 2. Install dependencies
